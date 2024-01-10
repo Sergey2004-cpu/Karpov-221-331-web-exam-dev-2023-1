@@ -1,0 +1,40 @@
+@import "~bootstrap/scss/bootstrap";
+
+$custom-colors: (
+  "body-light-text": $white,
+  "body-dark-text": $gray-800,
+  "light-bg": #4e0487,
+  "dark-bg": #8f5b02,
+  "mint": #32df9d,
+  "custom-info": #3ae2f8,
+);
+
+$all-colors: map-merge-multiple($custom-colors, $pinks);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "color": map-merge(
+      map-get($utilities, "color"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "color"), "values"),
+          (
+            $all-colors
+          ),
+        ),
+      ),
+    ),
+    "background-color": (
+      property: background-color,
+      class: bg,
+      values: map-merge(
+        $theme-colors,
+        $all-colors
+      )
+    ),
+  )
+);
+
+
+@import "~bootstrap/scss/bootstrap-utilities";

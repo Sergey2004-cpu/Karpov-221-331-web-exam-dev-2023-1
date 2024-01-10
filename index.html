@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="main.scss" />
+    <title>Главная страница</title>
+</head>
+
+<body>
+    <div
+        class="d-flex flex-column flex-md-row align-items-center text-body-light-text justify-content-between gap-5 gap-md-0 bg-dark-bg px-2 px-md-5 py-3 font-monospace">
+        <a href="#" class="text-body-light-text text-decoration-none fs-2 align-items-center d-flex fw-semibold">
+            <img src="./assets/icon.png" alt="Логотип компании"
+                class="rounded-3 d-inline-block align-text-center me-2" width="50" />TravelGuides</a>
+        <nav class="d-flex align-items-center gap-0 gap-md-2 gap-lg-5 flex-column flex-md-row fs-5">
+            <a href="#about" class="text-body-light-text">О нас</a>
+            <a href="#routes" class="text-body-light-text">Маршруты</a>
+            <a href="#contacts" class="text-body-light-text">Контакты</a>
+        </nav>
+        <a class="btn btn-info">Личный кабинет</a>
+    </div>
+    <main class="font-monospace bg-light-bg text-body-light-text px-2 px-md-5 py-3">
+        <div class="alerts mb-5"></div>
+        <div id="about" class="mb-5">
+            <div class="d-flex flex-column flex-md-row gap-4 text-center align-items-center justify-content-center">
+                <img src="assets/icon.png" alt="Логотип компании" class="rounded-2 img-fluid col-sm-4" />
+                <div class="text-body-dark-text d-flex flex-column col-md-5">
+                    <p class="fs-1 fw-bolder text-body-light-text">TravelGuides</p>
+                    <p class="text-body-light-text">
+                        Наша компания предлагает самые яркие и увлекательных
+                        маршруты для пеших туров по Москве. У нас работают 
+                        только профессионалы которые отлично знают, а главное
+                        любят свою работу.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="mb-5 container">
+            <h2 class="fs-2 fw-semibold text-body-light-text mb-md-5 text-center">
+                Наши преимущества
+            </h2>
+            <div class="row row-cols-auto text-center row-gap-3 text-body-dark-text justify-content-center">
+                <div class="mx-auto col-lg-3 col-md-6 col-12">
+                    <div class="card bg-mint">
+                        <img src="./assets/1.jpg" alt="Изображение с гидом и людьми, смотрящими в карту"
+                            class="rounded-2 card-img-top" />
+                        <div class="card-body">
+                            <p class="card-title fw-bold fs-4">
+                                Высокий профессионализм
+                            </p>
+                            <p class="fs-5 card-text">
+                                Наши гиды — настоящие историки, которые
+                                готовы увлекательно рассказать самые
+                                интересные истории о городе.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-12 col-md-6 mx-auto">
+                    <div class="card bg-mint">
+                        <img src="./assets/2.jpg" alt="Изображение с гидом и людьми на экскурсии на Красной площади"
+                            class="rounded-2 card-img-top" />
+                        <div class="card-body">
+                            <p class="card-title fw-bold fs-4">
+                                Увлекательность
+                            </p>
+                            <p class="fs-5 card-text">
+                                Мы не стоим на месте и стараемся подбирать
+                                маршруты таким образом, чтобы было интересно
+                                как гостям столицы, так и её жителям.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-12 col-md-6 mx-auto">
+                    <div class="card bg-mint">
+                        <img src="./assets/3.jpg" alt="Изображение с людьми" class="rounded-2 card-img-top" />
+                        <div class="card-body">
+                            <p class="card-title fw-bold fs-4">
+                                Удобство в оформлении заказа
+                            </p>
+                            <p class="fs-5 card-text">
+                                Мы сделали максимально удобный интерфейс
+                                для выбора маршрута  и гида, чтобы вы 
+                                могли наслаждаться крастой города.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="routes" class="mb-5">
+            <h2 class="fs-2 fw-semibold text-body-light-text mb-md-5 text-center">
+                Список пешеходных маршрутов
+            </h2>
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-end gap-4 gap-md-10 mb-3">
+                <div class="col-12 col-md-5">
+                    <label for="route__name" class="form-label routes__search">Название экскурсии</label>
+                    <input type="text" class="form-control" id="route__name__search" placeholder="Введите название экскурсии" />
+                </div>
+                <div class="col-12 col-md-5">
+                    <select class="form-select" id="main-object__select"
+                        aria-label="Основной объект во время экскурсии">
+                        <option selected disabled>Основной объект</option>
+                        <option value="none">Не выбрано</option>
+                    </select>
+                </div>
+            </div>
+            <div class="routes__table">
+                
+            </div>
+        </div>
+
+        <div id="contacts" class="mb-5 container">
+            <h3 class="fs-2 fw-semibold mb-4 text-center">Контакты</h3>
+            <div class="row row-cols-2 justify-content-center gap-3 gap-md-5">
+                <div class="col-5 text-center">
+                    <a class="text-body-light-text" href="https://t.me/kkk_O_o" action="_blank">Telegram</a>
+                </div>
+                <div class="col-5 text-center">
+                    
+                    <a href="mailto:sergey.karpov@mail.ru" class="text-body-light-text">Email</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-to border-1 border-dark fs-4 bg-dark-bg">
+        <div class="text-body-light-text container text-center py-4">
+            <div>
+                TravelGuides
+            </div>
+            <div>
+                &#169; Карпов Сергей
+            </div>
+        </div>
+    </footer>
+
+    <!-- Templates -->
+    <template id="alert__template">
+        <div class="alert alert-dismissible fade show" role="alert">
+            <span class="msg"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </template>
+
+    <template id="routes__table__template">
+        <div>
+            <div class="table-responsive">
+                <table class="table table-hover table-sm table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Название</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Основные объекты</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="routes__table-body"></tbody>
+                </table>
+            </div>
+            <nav class="nav justify-content-center">
+                <ul class="pagination routes__table__pagination">
+                    <li class="page-item" id="routes-previous-page-btn">
+                        <button class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">&lsaquo;</span>
+                        </button>
+                    </li>
+                    <li class="page-item" id="routes-next-page-btn">
+                        <button class="page-link" aria-label="Next">
+                            <span aria-hidden="true">&rsaquo;</span>
+                        </button>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </template>
+
+    <template id="guides__block__template">
+        <div id="guides" class="mb-5">
+            <h2 class="fs-2 fw-semibold text-body-light-text mb-md-5 text-center">
+                Доступные гиды по маршруту
+                <span class="guides__route-name text-underline fw-bolder"></span>
+            </h2>
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-end gap-4 gap-md-5 mb-3">
+                <div class="col-12 col-md-4">
+                    <select class="form-select" id="guide__language__select" aria-label="Язык экскурсии">
+                        <option selected disabled>Язык экскурсии</option>
+                        <option value="none">Не выбрано</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 d-flex align-items-md-center gap-2 flex-column flex-md-row">
+                    <label for="guides__work__experience" class="form-label routes__search col-md-2 mb-0">Опыт работы</label>
+                    <div class="d-flex gap-2">
+                        <input type="number" min="0" class="form-control" id="guides__work__experience"
+                            name="work__exp__from" placeholder="От" />
+                        <input type="number" min="0" class="form-control" name="work__exp__to" placeholder="До" />
+                    </div>
+                </div>
+            </div>
+            <div id="guides__table__container">
+                
+            </div>
+        </div>
+    </template>
+
+    <template id="guides__table__template">
+        <div class="table-responsive" id="guides__table"> 
+            <table class="table table-hover table-sm table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">ФИО</th>
+                        <th scope="col">Языки</th>
+                        <th scope="col">Опыт</th>
+                        <th scope="col">Стоимость (руб в час)</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody class="guides__table-body"></tbody>
+            </table>
+        </div>
+    </template>
+
+    <template id="guide__row__template">
+        <tr>
+            <td>
+                <img src="assets/guide_avatar.png" width="50" />
+            </td>
+            <td class="guide__fio">ФИО</td>
+            <td class="guide__language">русский</td>
+            <td class="guide__work__exp">3 года</td>
+            <td class="guide__price">Стоимость/час</td>
+            <td class=" guide__button">
+                <button class="btn btn-primary">Выбрать</button>
+            </td>
+        </tr>
+    </template>
+
+    <template id="route__template">
+        <tr class="route">
+            <td class="route__name">Название</td>
+            <td class="route__description">Описание</td>
+            <td class="route__main-objects ">Основные объекты</td>
+            <td class=" route__button">
+                <button class="btn btn-primary">Выбрать</button>
+            </td>
+        </tr>
+    </template>
+
+    <template id="create__order__btn__template">
+        <div class="text-center">
+            <button class="btn btn-info" id="create__order__btn" data-bs-toggle="modal" data-bs-target="#order-modal"
+                data-action="create">
+                Оформить заявку
+            </button>
+        </div>
+    </template>
+
+    <template id="pagination__button">
+        <div class="page-item">
+            <button class="page-link page-number" type="button">1</button>
+        </div>
+    </template>
+
+    <!-- Modal -->
+    <div class="modal fade" id="order-modal" tabindex="-1" aria-labelledby="create__order" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="create__order">
+                        Оформление заявки
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3 row">
+                            <label for="guide__fio" class="col-md-3 col-form-label">ФИО гида:</label>
+                            <div class="col-md-9">
+                                <input type="text" name="guide__fio" id="guide__fio" readonly
+                                    class="form-control-plaintext" />
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="route__name" class="col-md-3 col-form-label">Название маршрута:</label>
+                            <div class="col-md-9">
+                                <textarea name="route__name" id="route__name" cols="30" rows="3" readonly
+                                    class="form-control-plaintext"></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3 row row-cols-auto g-3 justify-content-between">
+                            <div>
+                                <label for="date" class="form-label">Дата экскурсии:</label>
+                                <div>
+                                    <input type="date" name="date" id="date" class="form-control" min="2024-01-01"
+                                        max="2024-12-31" />
+                                </div>
+                            </div>
+                            <div>
+                                <label for="time" class="form-label">Время начала:</label>
+                                <div>
+                                    <input type="time" name="time" id="time" class="form-control" min="09:00"
+                                        max="23:00" step="1800" />
+                                </div>
+                            </div>
+                            <div>
+                                <label for="duration" class="form-label">Длительность экскурсии:</label>
+                                <div>
+                                    <select name="duration" id="duration" class="form-control">
+                                        <option value="1">1 час</option>
+                                        <option value="2">2 часа</option>
+                                        <option value="3">3 часа</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="people__count" class="form-label">Количество человек:</label>
+                                <div>
+                                    <input type="number" name="people__count" id="people__count" class="form-control"
+                                        min="1" max="20" value="1" />
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-3 fs-5">Дополнительные опции</p>
+                        <div class="mb-3 row row-cols-2 gap-5 justify-content-center">
+                            <div class="col-md-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="option1" id="option1">
+                                    <label class="form-check-label" for="option1">
+                                        Опция 1
+                                    </label>
+                                </div>
+                                <div>Использовать скидку для школьников и студентов</div>
+                                <div>Стоимость уменьшается на 15%</div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="option2" id="option2">
+                                    <label class="form-check-label" for="option2">
+                                        Опция 2
+                                    </label>
+                                </div>
+                                <div>Тематические сувениры для посетителей</div>
+                                <div>Стоимость увеличивается на 500 рублей для каждого посетителя.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">Итоговая стоимость: <strong id="order__price"></strong></div>
+                        <input type="hidden" name="action" />
+                        <input type="hidden" name="route-id" />
+                        <input type="hidden" name="guide-id" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Отменить
+                    </button>
+                    <button type="button" class="btn btn-info action-order-btn" data-bs-dismiss="modal">
+                        Оформить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
