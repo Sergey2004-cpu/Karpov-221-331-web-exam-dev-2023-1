@@ -25,22 +25,22 @@ let mainObjectFilterValue = "none";
 let routeDescriptionMaxLength = 100;
 let routeMainObjectMaxLength = 100;
 
-async function getRoutes() {
+async function fetchRoutesFromServer() {
     try {
       let response = await fetch(serverURL + "routes?" + apiKey);
       
       let data = await response.json();
       if (!response.ok) {
         if (data["error"] !== undefined) {
-          showAlert(data["error"], "warning");
+          displayAlertMessage(data["error"], "warning");
           return;
         }
-        showAlert(await response.text(), "warning");
+        displayAlertMessage(await response.text(), "warning");
         return;
       }
   
       if (data["error"] !== undefined) {
-        showAlert(data["error"], "warning");
+        displayAlertMessage(data["error"], "warning");
         return;
       }
   
@@ -49,14 +49,14 @@ async function getRoutes() {
         routes.push(route);
       }
       currentRoutes = routes;
-      await showRoutes();
-      addMainObjectsOptions();
+      await displayRoutesInTable();
+      populateMainObjectsDropdown();
     } catch (err) {
-      showAlert(err, "warning");
+      displayAlertMessage(err, "warning");
     }
   }
 
-  async function  showRoutes() {
+  async function  displayRoutesInTable() {
     let routesTable = document.querySelector(".routes__table");
     // TODO: edit logic of rerender routes block to dont rerender all table every time
     routesTable.replaceChildren();
@@ -72,13 +72,13 @@ async function getRoutes() {
     let routesTableBody = routesTable.querySelector(".routes__table-body");
     let first = (currentPage - 1) * maxRoutesOnPage;
     for (let i = first; i < Math.min(first + maxRoutesOnPage, currentRoutes.length); i++) {
-      let newRouteRow = createRouteRow(currentRoutes[i]);
+      let newRouteRow = generateRouteTableRow(currentRoutes[i]);
       routesTableBody.append(newRouteRow);
     }
-    showPaginationButtons();
+    renderPaginationControls();
   }
 
-  function addMainObjectsOptions() {
+  function populateMainObjectsDropdown() {
     routes.forEach((route) => route.mainObject.split(" - ").forEach((mainObject) => {
         if (mainObject !== undefined && mainObject.trim() !== '') 
           mainObjectsSet.add(mainObject.trim());
@@ -94,7 +94,7 @@ async function getRoutes() {
     }
   }
 
-  function showPaginationButtons() {
+  function renderPaginationControls() {
     let pagesCount = Math.ceil(currentRoutes.length / maxRoutesOnPage);
     let pageNumberTemplate = document.getElementById("pagination__button");
     let routesPagination = document.querySelector('.routes__table__pagination');
@@ -149,10 +149,10 @@ async function getRoutes() {
       routesPagination.querySelector("#routes-next-page-btn").before(newPageNumberBlock);
     }
 
-    routesPagination.onclick = (e) => handlePaginationButtonTap(e.target);
+    routesPagination.onclick = (e) => onPaginationButtonClick(e.target);
   }
 
-  function handlePaginationButtonTap(target) {
+  function onPaginationButtonClick(target) {
     if (target.classList.contains("disabled")) return;
     let content = target.innerHTML;
     if (target.querySelector("span") != undefined) {
@@ -171,22 +171,22 @@ async function getRoutes() {
     else {
       return;
     }
-    showRoutes();
+    displayRoutesInTable();
   }
 
-  function handleChangeRoutesNameFilterValue(event) {
+  function onRouteNameFilterChange(event) {
     if (nameFilterValue === event.target.value) return;
     nameFilterValue = event.target.value.toLowerCase();
-    filterRoutes();
+    applyRouteFilters();
   }
 
-  function handleChangeRoutesMainObjectFilterValue(event) {
+  function onMainObjectFilterChange(event) {
     if (mainObjectFilterValue === event.target.value) return;
     mainObjectFilterValue = event.target.value;
-    filterRoutes();
+    applyRouteFilters();
   }
 
-  function filterRoutes() {
+  function applyRouteFilters() {
     if ((mainObjectFilterValue === undefined || mainObjectFilterValue === "none") && (nameFilterValue === "")) {
       currentRoutes = routes;
     }
@@ -200,18 +200,18 @@ async function getRoutes() {
       currentRoutes = newRoutes;
     }
     currentPage = 1;
-    showRoutes();
+    displayRoutesInTable();
   }
 
-  async function handleChangeCurrentRoute(newRoute) {
+  async function onRouteSelectionChange(newRoute) {
     if (currentRoute.id == undefined) {
-      showGuidesBlock();
+      displayGuidesInTableBlock();
     }
     currentRoute = newRoute;
-    await getGuides(currentRoute);
+    await fetchGuidesForRoute(currentRoute);
   }
 
-  function createRouteRow(route) {
+  function generateRouteTableRow(route) {
     let routeTemplate = document.getElementById("route__template");
     let newRouteRow = routeTemplate.content.firstElementChild.cloneNode(true);
     newRouteRow.querySelector('.route__name').innerHTML = route.name;
@@ -236,7 +236,7 @@ async function getRoutes() {
             row.classList.remove('table-active');
           }
           newRouteRow.classList.add('table-active');
-          await handleChangeCurrentRoute(route);
+          await onRouteSelectionChange(route);
         }
       }
     )
@@ -265,27 +265,27 @@ let workExpToFilterValue = undefined;
 
 
 
-  async function getGuides(route) {
+  async function fetchGuidesForRoute(route) {
     document.querySelector('.guides__route-name').innerHTML = route.name;
     let guidesTable = document.getElementById("guides__table__container");
     guidesTable.replaceChildren();
-    clearFilterValue();
+    resetGuideFilters();
     try {
       let response = await fetch(serverURL + `routes/${route.id}/guides?` + apiKey);
   
       let data = await response.json();
       if (!response.ok) {
         if (data["error"] !== undefined) {
-          showAlert(data["error"], "warning");
+          displayAlertMessage(data["error"], "warning");
           return;
         }
-        showAlert(await response.text(), "warning");
+        displayAlertMessage(await response.text(), "warning");
         
         return;
       }
       
       if (data["error"] !== undefined) {
-        showAlert(data["error"], "warning");
+        displayAlertMessage(data["error"], "warning");
       
         return;
       }
@@ -296,27 +296,27 @@ let workExpToFilterValue = undefined;
         guides.push(guide);
       }
       currentGuides = guides;
-      showGuides();
-      addLanguageOptions();
+      displayGuidesInTable();
+      populateLanguageDropdown();
     } catch (err) {
-      showAlert(err, "warning");
+      displayAlertMessage(err, "warning");
     
     }
   }
 
-  function showGuides() {
+  function displayGuidesInTable() {
     let guidesTable = document.getElementById("guides__table__container");
     guidesTable.replaceChildren();
     let guideTableTemplate = document.getElementById("guides__table__template");
     guidesTable.append(guideTableTemplate.content.firstElementChild.cloneNode(true));
     let guidesTableBody = guidesTable.querySelector(".guides__table-body");
     for (let guide of currentGuides) {
-      let newGuideRow = createGuideRow(guide);
+      let newGuideRow = generateGuideTableRow(guide);
       guidesTableBody.append(newGuideRow);
     }
   }
 
-  function createGuideRow(guide) {
+  function generateGuideTableRow(guide) {
     let guideRowTemplate = document.getElementById("guide__row__template");
     let newGuideRow = guideRowTemplate.content.firstElementChild.cloneNode(true);
     newGuideRow.querySelector('.guide__fio').innerHTML = guide.name;
@@ -332,22 +332,22 @@ let workExpToFilterValue = undefined;
           }
           newGuideRow.classList.add('table-active');
         }
-        showCreateOrderBtn();
+        displayOrderCreationButton();
       }
     )
     return newGuideRow;
   }
 
-  function showGuidesBlock() {
+  function displayGuidesInTableBlock() {
     let guidesBlock = document.getElementById('guides__block__template').content.firstElementChild.cloneNode(true);
     document.getElementById('routes').after(guidesBlock);
 
-    guidesBlock.querySelector('#guide__language__select').onchange = (e) => handleChangeGuidesLanguageFilterValue(e);
-    guidesBlock.querySelector('input[name="work__exp__from"]').oninput = (e) => handleChangeWorkExpFromFilterValue(e);
-    guidesBlock.querySelector('input[name="work__exp__to"]').oninput = (e) => handleChangeWorkExpToFilterValue(e);
+    guidesBlock.querySelector('#guide__language__select').onchange = (e) => onGuideLanguageFilterChange(e);
+    guidesBlock.querySelector('input[name="work__exp__from"]').oninput = (e) => onWorkExperienceFromFilterChange(e);
+    guidesBlock.querySelector('input[name="work__exp__to"]').oninput = (e) => onWorkExperienceToFilterChange(e);
   }
 
-  function clearFilterValue() {
+  function resetGuideFilters() {
     let guidesBlock = document.getElementById('guides');
     guidesBlock.querySelector('#guide__language__select').value = "none";
     guidesBlock.querySelector('input[name="work__exp__from"]').value = "";
@@ -356,24 +356,24 @@ let workExpToFilterValue = undefined;
     workExpFromFilterValue = undefined;
     workExpToFilterValue = undefined;
 
-    deleteCreateOrderBtn();
+    removeOrderCreationButton();
   }
 
-  function deleteCreateOrderBtn() {
+  function removeOrderCreationButton() {
     if (document.getElementById('create__order__btn') !== null) {
       document.getElementById('create__order__btn').remove();
     }
   }
 
-  function showCreateOrderBtn() {
+  function displayOrderCreationButton() {
     if (document.getElementById('create__order__btn') === null) {
       let guidesTable = document.getElementById('guides__table');
-      let createOrderBtn = document.getElementById('create__order__btn__template').content.firstElementChild.cloneNode(true);
-      guidesTable.after(createOrderBtn);
+      let submitNewOrderBtn = document.getElementById('create__order__btn__template').content.firstElementChild.cloneNode(true);
+      guidesTable.after(submitNewOrderBtn);
     }
   }
 
-  function addLanguageOptions() {
+  function populateLanguageDropdown() {
     guides.forEach((guide) => languagesSet.add(guide.language));
 
     let languageSelect = document.querySelector('#guide__language__select');
@@ -385,25 +385,25 @@ let workExpToFilterValue = undefined;
     }
   }
 
-  function handleChangeGuidesLanguageFilterValue(event) {
+  function onGuideLanguageFilterChange(event) {
     if (languageFilterValue === event.target.value) return;
     languageFilterValue = event.target.value;
-    filterGuides();
+    applyGuideFilters();
   }
 
-  function handleChangeWorkExpFromFilterValue(event) {
+  function onWorkExperienceFromFilterChange(event) {
     if (workExpFromFilterValue === event.target.value) return;
     workExpFromFilterValue = event.target.value;
-    filterGuides();
+    applyGuideFilters();
   }
   
-  function handleChangeWorkExpToFilterValue(event) {
+  function onWorkExperienceToFilterChange(event) {
     if (workExpToFilterValue === event.target.value) return;
     workExpToFilterValue = event.target.value;
-    filterGuides();
+    applyGuideFilters();
   }
 
-  function filterGuides() {
+  function applyGuideFilters() {
     if (languageFilterValue === "none" 
       && workExpToFilterValue === undefined 
       && workExpFromFilterValue === undefined) {
@@ -420,7 +420,7 @@ let workExpToFilterValue = undefined;
       }
       currentGuides = newGuides;
     }
-    showGuides();
+    displayGuidesInTable();
   }
 
 class Order {
@@ -453,17 +453,17 @@ let actionBtnText = {
 let celebrationDays = [new Date("2024-01-08"), new Date("2024-02-23"), new Date("2024-03-08"), new Date("2024-04-29"), new Date("2024-04-30"), new Date("2024-05-01"), new Date("2024-05-09"), new Date("2024-05-10"), new Date("2024-06-12"), new Date("2024-11-04"), new Date("2024-12-30"), new Date("2024-12-31")];
 
 
-function resetForm(form) {
+function resetOrderForm(form) {
     form.querySelector('#date').valueAsDate = new Date();
     form.querySelector('#time').value = "09:00";
     form.querySelector('#duration').value = "1";
     form.querySelector('#people__count').value = 1;
     form.querySelector('#option1').checked = false;
     form.querySelector('#option2').checked = false;
-    form.querySelector("#order__price").innerHTML = getOrderPrice(form);
+    form.querySelector("#order__price").innerHTML = calculateOrderPrice(form);
   }
 
-  function setFormValues(form, action) {
+  function initializeOrderForm(form, action) {
     form.elements['action'].value = action;
     form.elements['route-id'].value = currentRoute.id;
     form.elements['guide-id'].value = currentGuide.id;
@@ -471,10 +471,10 @@ function resetForm(form) {
     document.querySelector('.action-order-btn').textContent = actionBtnText[action];
     form.querySelector('#guide__fio').value = currentGuide.name;
     form.querySelector('#route__name').value = currentRoute.name;
-    form.onchange = () => form.querySelector('#order__price').innerHTML = getOrderPrice(form);
+    form.onchange = () => form.querySelector('#order__price').innerHTML = calculateOrderPrice(form);
   }
 
-  function getOrderPrice(form) {
+  function calculateOrderPrice(form) {
     let date = form.querySelector('#date').valueAsDate;
     let isThisDayOff = false;
     if (date.getDay() === 0) {
@@ -518,7 +518,7 @@ function resetForm(form) {
     return Math.ceil(price);
   }
 
-  async function createOrder(order) {
+  async function submitNewOrder(order) {
     let formData = new FormData();
     formData.set("guide_id", order.guideId);
     formData.set("route_id", order.routeId);
@@ -538,25 +538,25 @@ function resetForm(form) {
         let data = await response.json();
         if (!response.ok) {
           if (data["error"] !== undefined) {
-            showAlert(data["error"], "warning");
+            displayAlertMessage(data["error"], "warning");
             return;
           }
-          showAlert(await response.text(), "warning")
+          displayAlertMessage(await response.text(), "warning")
           return;
         }
         
         if (data["error"] !== undefined) {
-          showAlert(data["error"], "warning");
+          displayAlertMessage(data["error"], "warning");
           return;
         }
 
-        showAlert("Заявка успешно оформлена!");
+        displayAlertMessage("Заявка успешно оформлена!");
     } catch (error) {
-        showAlert(error, "warning")
+        displayAlertMessage(error, "warning")
     }
   }
 
-  async function actionOrderBtnHandler(event) {
+  async function handleOrderActionButtonClick(event) {
     let form = event.target.closest('.modal').querySelector('form');
     let action = form.elements['action'].value;
     let guideId = form.elements['guide-id'].value;
@@ -571,11 +571,11 @@ function resetForm(form) {
     
     if (action === 'create') {
       let order = new Order({ guideId: guideId, routeId: routeId, date: date, time: time, duration: duration, persons: persons, price: price, optionFirst: isOption1Enable, optionSecond: isOption2Enable });
-      await createOrder(order);
+      await submitNewOrder(order);
     }
   }
 
-function showAlert(msg, category='success') {
+function displayAlertMessage(msg, category='success') {
   let alerts = document.querySelector('.alerts');
   let template = document.getElementById('alert__template');
   let newAlert = template.content.firstElementChild.cloneNode(true);
@@ -586,18 +586,18 @@ function showAlert(msg, category='success') {
 }
 
 window.onload = async function () {
-  await getRoutes();
+  await fetchRoutesFromServer();
 
-  document.getElementById("route__name__search").oninput = (e) => handleChangeRoutesNameFilterValue(e);
-  document.getElementById("main-object__select").onchange = (e) => handleChangeRoutesMainObjectFilterValue(e);
+  document.getElementById("route__name__search").oninput = (e) => onRouteNameFilterChange(e);
+  document.getElementById("main-object__select").onchange = (e) => onMainObjectFilterChange(e);
 
   document.getElementById('order-modal').addEventListener('show.bs.modal', function (event) {
     let form = this.querySelector('form');
     console.log("kdjgkjj")
-    resetForm(form)
+    resetOrderForm(form)
     let action = event.relatedTarget.dataset.action || 'create';
-    setFormValues(form, action)
+    initializeOrderForm(form, action)
   });
 
-  document.querySelector('.action-order-btn').onclick = (e) => actionOrderBtnHandler(e);
+  document.querySelector('.action-order-btn').onclick = (e) => handleOrderActionButtonClick(e);
 }
